@@ -48,3 +48,7 @@ app.post("/add-customer", async (req, res) => {
 });
 
 app.use(express.static("public"));
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
