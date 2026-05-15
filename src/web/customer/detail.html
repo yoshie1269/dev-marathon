@@ -35,6 +35,10 @@
     <a href="./list.html" class="btn btn-secondary">
       一覧へ戻る
     </a>
+
+    <button id="delete-button" class="btn btn-danger ml-2">
+        削除
+    </button>
   </div>
 
   <script>
@@ -65,6 +69,32 @@
           customer.location;
       })
       .catch(error => console.error(error));
+
+      document.getElementById("delete-button")
+        .addEventListener("click", () => {
+
+            const result = confirm("本当に削除しますか？");
+
+            if (!result) {
+            return;
+            }
+
+            fetch(`http://localhost:5631/delete-customer/${customerId}`, {
+            method: "DELETE"
+            })
+            .then(response => response.json())
+            .then(data => {
+
+            if (data.success) {
+                alert("削除しました");
+                window.location.href = "./list.html";
+            } else {
+                alert("削除失敗");
+            }
+
+            })
+            .catch(error => console.error(error));
+        });
   </script>
 </body>
 </html>
