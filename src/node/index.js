@@ -46,3 +46,19 @@ app.post("/add-customer", async (req, res) => {
     res.json({ success: false });
   }
 });
+
+app.delete("/delete-customer/:id", async (req, res) => {
+  try {
+    const customerId = req.params.id;
+
+    await pool.query(
+      "DELETE FROM customers WHERE customer_id = $1",
+      [customerId]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false });
+  }
+});
