@@ -13,7 +13,7 @@ const pool = new Pool({
   host: "db",
   database: "crm_5631", // PostgreSQLのデータベース名に置き換えてください
   password: "pass_5631", // PostgreSQLのパスワードに置き換えてください
-  port: 5631,
+  port: 5432,
 });
 
 app.listen(port, () => {
