@@ -10,26 +10,38 @@
     <h1 class="mb-4">顧客詳細</h1>
 
     <table class="table table-bordered">
-      <tr>
-        <th>ID</th>
-        <td id="customer_id"></td>
-      </tr>
-      <tr>
-        <th>会社名</th>
-        <td id="company_name"></td>
-      </tr>
-      <tr>
-        <th>業種</th>
-        <td id="industry"></td>
-      </tr>
-      <tr>
-        <th>連絡先</th>
-        <td id="contact"></td>
-      </tr>
-      <tr>
-        <th>所在地</th>
-        <td id="location"></td>
-      </tr>
+        <tr>
+            <th>ID</th>
+            <td id="customer_id"></td>
+        </tr>
+
+        <tr>
+            <th>会社名</th>
+            <td>
+            <input id="company_name" class="form-control">
+            </td>
+        </tr>
+
+        <tr>
+            <th>業種</th>
+            <td>
+            <input id="industry" class="form-control">
+            </td>
+        </tr>
+
+        <tr>
+            <th>連絡先</th>
+            <td>
+            <input id="contact" class="form-control">
+            </td>
+        </tr>
+
+        <tr>
+            <th>所在地</th>
+            <td>
+            <input id="location" class="form-control">
+            </td>
+        </tr>
     </table>
 
     <a href="./list.html" class="btn btn-secondary">
@@ -42,6 +54,10 @@
 
     <button id="edit-button" class="btn btn-warning ml-2">
         編集
+    </button>
+
+    <button id="update-button" class="btn btn-primary ml-2">
+        更新
     </button>
 
   </div>
@@ -58,21 +74,19 @@
           item => item.customer_id == customerId
         );
 
-        document.getElementById("customer_id").textContent =
-          customer.customer_id;
+        document.getElementById("company_name").value =
+        customer.company_name;
 
-        document.getElementById("company_name").textContent =
-          customer.company_name;
+        document.getElementById("industry").value =
+        customer.industry;
 
-        document.getElementById("industry").textContent =
-          customer.industry;
+        document.getElementById("contact").value =
+        customer.contact;
 
-        document.getElementById("contact").textContent =
-          customer.contact;
-
-        document.getElementById("location").textContent =
-          customer.location;
+        document.getElementById("location").value =
+        customer.location;
       })
+
       .catch(error => console.error(error));
 
       document.getElementById("delete-button")
@@ -95,6 +109,47 @@
                 window.location.href = "./list.html";
             } else {
                 alert("削除失敗");
+            }
+
+            })
+            .catch(error => console.error(error));
+        });
+
+    document.getElementById("edit-button")
+        .addEventListener("click", () => {
+            window.location.href = `./update.html?id=${customerId}`;
+        });
+
+    document.getElementById("update-button")
+        .addEventListener("click", () => {
+
+            fetch(`http://localhost:5631/update-customer/${customerId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                companyName:
+                document.getElementById("company_name").value,
+
+                industry:
+                document.getElementById("industry").value,
+
+                contact:
+                document.getElementById("contact").value,
+
+                location:
+                document.getElementById("location").value
+            })
+            })
+            .then(response => response.json())
+            .then(data => {
+
+            if (data.success) {
+                alert("更新しました");
+                location.reload();
+            } else {
+                alert("更新失敗");
             }
 
             })
